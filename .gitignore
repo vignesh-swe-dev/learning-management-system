@@ -1,0 +1,14 @@
+node_modules
+.env
+uploads/*
+!uploads/.gitkeep
+coverage
+dist
+
+dist
+
+dist
+
+dist
+
+dist
