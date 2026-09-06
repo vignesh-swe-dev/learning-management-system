@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LMS</title>
+    <!--
+      Inline theme script: runs BEFORE React renders so there is zero
+      white-flash. Reads localStorage first, then system preference.
+    -->
+    <script>
+      try {
+        var stored = localStorage.getItem('lms-theme');
+        var theme = stored
+          ? stored
+          : window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
