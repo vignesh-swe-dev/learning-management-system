@@ -1,0 +1,130 @@
+/* ============================================================
+   MOTION.CSS — Animations, transitions, page/route changes,
+   staggered entrances, reduced-motion overrides
+   ============================================================ */
+
+/* ---- Prefers-reduced-motion guard ----
+   Almost everything in this file is wrapped so that users
+   with reduced-motion see instant changes without any movement.
+*/
+
+/* ---------- Page / route transition ---------- */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.page-exit {
+  opacity: 1;
+}
+.page-exit-active {
+  opacity: 0;
+}
+
+/* Actual transition applied by JS */
+.route-transition {
+  animation: page-in var(--lms-dur-slow) var(--lms-ease-out) both;
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Staggered card / tile entrance ---------- */
+.stagger-item {
+  opacity: 0;
+  animation: stagger-in var(--lms-dur-slow) var(--lms-ease-out) forwards;
+}
+@keyframes stagger-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Delay helpers — up to 8 items, 40 ms apart */
+.stagger-item:nth-child(1)  { animation-delay:   0ms; }
+.stagger-item:nth-child(2)  { animation-delay:  40ms; }
+.stagger-item:nth-child(3)  { animation-delay:  80ms; }
+.stagger-item:nth-child(4)  { animation-delay: 120ms; }
+.stagger-item:nth-child(5)  { animation-delay: 160ms; }
+.stagger-item:nth-child(6)  { animation-delay: 200ms; }
+.stagger-item:nth-child(7)  { animation-delay: 240ms; }
+.stagger-item:nth-child(8)  { animation-delay: 280ms; }
+/* cap remaining items at max delay */
+.stagger-item:nth-child(n+9) { animation-delay: 280ms; }
+
+/* ---------- Progress bar animated fill ---------- */
+.progress-bar-animated-fill {
+  animation: progress-fill .8s var(--lms-ease-out) both;
+}
+@keyframes progress-fill {
+  from { width: 0; }
+  /* width is set inline; this animates from 0 to it */
+}
+
+/* ---------- Toast slide-in from bottom-right ---------- */
+.toast-enter {
+  animation: toast-slide-in var(--lms-dur-base) var(--lms-ease-out) both;
+}
+@keyframes toast-slide-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.toast-exit {
+  animation: toast-slide-out var(--lms-dur-fast) var(--lms-ease) forwards;
+}
+@keyframes toast-slide-out {
+  from { opacity: 1; }
+  to   { opacity: 0; transform: translateY(8px); }
+}
+
+/* ---------- Float animation (empty-state icons) ---------- */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ---------- Skeleton shimmer (defined in components.css, here for completeness) ---------- */
+
+/* ---------- Ripple on primary buttons (pure CSS) ---------- */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.18);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    transform .4s var(--lms-ease-out),
+    opacity .4s;
+}
+.btn-primary:active::after {
+  transform: scale(2.5);
+  opacity: 0;
+  transition: 0s;
+}
+
+/* ---------- Offcanvas sidebar smooth slide ---------- */
+.offcanvas {
+  transition: transform var(--lms-dur-slow) var(--lms-ease) !important;
+}
+
+/* ---------- Reduced motion: kill everything ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
